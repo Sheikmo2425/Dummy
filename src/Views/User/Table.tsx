@@ -8,6 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import { usertype } from '../../MOdel/user';
+import { Button, Card, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 
 
 
@@ -21,7 +23,13 @@ import { usertype } from '../../MOdel/user';
 // ];
 // console.log('sheik', 215, 12,34, 22,  createData('sheik', 215, 12,34, 22))
 export default function BasicTable({userdata}:{userdata:usertype[]}) {
+const [a,seta]=useState<number>(0)
+const [name,setname]=useState<string>('')
+const add=()=>{
+  seta(a+1)
  
+}
+
   return (<>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -43,16 +51,22 @@ export default function BasicTable({userdata}:{userdata:usertype[]}) {
               <TableCell component="th" scope="row">
                 {i+1}
               </TableCell>
-              <TableCell align="right">{user.name}</TableCell>
-              <TableCell align="right">{user.email}</TableCell>
-              <TableCell align="right">{user.age}</TableCell>
+              <TableCell align="right">{user?.name}</TableCell>
+              <TableCell align="right">{user?.email}</TableCell>
+              <TableCell align="right">{user?.age}</TableCell>
          
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-  
+    <Card sx={{p:1,m:1}}>
+
+  <Typography>{a}</Typography>
+  <Button onClick={()=>add()}>add</Button>
+  <Typography>{name}</Typography>
+  <TextField value={name} placeholder='name' onChange={(e)=>setname(e.target.value)}  required /> 
+    <Button onClick={()=>setname('')} >Clear</Button></Card>
       </>
   );
 }
