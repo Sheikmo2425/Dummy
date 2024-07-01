@@ -5,8 +5,9 @@ interface props {
     open: boolean
     close: () => void
     save: (e: usertype) => void
+    name:string
 }
-const AddEdit = ({ open, close, save }: props) => {
+const AddEdit = ({ open, close, save, name }: props) => {
     const { reset, register, handleSubmit } = useForm<usertype>()
     const onclose = () => {
         reset()
@@ -19,7 +20,7 @@ const AddEdit = ({ open, close, save }: props) => {
     return (
         <>
             <Dialog open={open} >
-                <DialogTitle></DialogTitle>
+                <DialogTitle>{name}</DialogTitle>
                 <DialogContent>
                     <form onSubmit={handleSubmit(onsave)}>
                         <InputLabel>Name </InputLabel>
