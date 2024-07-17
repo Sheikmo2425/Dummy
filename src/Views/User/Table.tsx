@@ -10,6 +10,9 @@ import Paper from '@mui/material/Paper';
 import { usertype } from '../../MOdel/user';
 import { Button, Card, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AddEdit from './AddEdit';
+import { delete_s, setselecteddata } from '../../Slice/UserSlice';
 
 
 
@@ -22,14 +25,23 @@ import { useState } from 'react';
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 // console.log('sheik', 215, 12,34, 22,  createData('sheik', 215, 12,34, 22))
-export default function BasicTable({userdata}:{userdata:usertype[]}) {
+export default function BasicTable() {
 const [a,seta]=useState<number>(0)
 const [name,setname]=useState<string>('')
 const add=()=>{
   seta(a+1)
  
 }
-
+const [openedit,setopenedit]=useState(false)
+const dispatch= useDispatch()
+const edit=(e:usertype)=>{
+  dispatch(setselecteddata(e))
+setopenedit(true)
+}
+const delete_=(id:number)=>{
+dispatch(delete_s(id))
+}
+const items = useSelector((state:any) => state.user.items);
   return (<>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -39,11 +51,12 @@ const add=()=>{
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
             <TableCell>Age</TableCell>
+            <TableCell>aCTION</TableCell>
         
           </TableRow>
         </TableHead>
         <TableBody>
-          {userdata?.map((user,i) => (
+          {items?.map((user:usertype,i:number) => (
             <TableRow
               key={i}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -54,6 +67,7 @@ const add=()=>{
               <TableCell align="right">{user?.name}</TableCell>
               <TableCell align="right">{user?.email}</TableCell>
               <TableCell align="right">{user?.age}</TableCell>
+              <TableCell align="right"><Button onClick={()=>edit(user)}>Edit</Button><Button onClick={()=>delete_(user?.id)}>Delete</Button></TableCell>
          
             </TableRow>
           ))}
@@ -67,6 +81,7 @@ const add=()=>{
   <Typography>{name}</Typography>
   <TextField value={name} placeholder='name' onChange={(e)=>setname(e.target.value)}  required /> 
     <Button onClick={()=>setname('')} >Clear</Button></Card>
+    <AddEdit open={openedit} close={()=>{setopenedit(false)}}/>
       </>
   );
 }

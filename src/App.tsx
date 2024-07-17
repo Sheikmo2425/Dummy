@@ -2,7 +2,9 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 
+import { Provider } from "react-redux"
 import Tableindex from "./Views/User"
+import store from "./Store/ConfigStore"
 
 
 function App() {
@@ -32,7 +34,9 @@ function App() {
     //   </p>
     // </>
     <>
+    <Provider store={store} >
     <Tableindex/>
+    </Provider>
     </>
   )
 }

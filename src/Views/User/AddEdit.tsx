@@ -1,26 +1,40 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, InputLabel, TextField } from "@mui/material"
 import { usertype } from "../../MOdel/user"
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
+import { add, resetselecteddata, update } from "../../Slice/UserSlice"
+import { useEffect } from "react"
 interface props {
     open: boolean
     close: () => void
-    save: (e: usertype) => void
-    name:string
+
+
 }
-const AddEdit = ({ open, close, save, name }: props) => {
+const AddEdit = ({ open, close }: props) => {
+    const item = useSelector((state:any) => state.user.initialdata);
     const { reset, register, handleSubmit } = useForm<usertype>()
+    useEffect(()=>{
+        reset(item)
+    },[item])
+    const dispatch = useDispatch();
     const onclose = () => {
         reset()
+        dispatch(resetselecteddata())
         close()
     }
+
     const onsave = (e: usertype) => {
-        save(e)
+        if (e.id) {
+            dispatch(update(e))
+        } else {
+            dispatch(add(e))
+        }
         onclose()
     }
     return (
         <>
             <Dialog open={open} >
-                <DialogTitle>{name}</DialogTitle>
+                <DialogTitle>{item.id? 'Edit' :'Add'} user</DialogTitle>
                 <DialogContent>
                     <form onSubmit={handleSubmit(onsave)}>
                         <InputLabel>Name </InputLabel>
